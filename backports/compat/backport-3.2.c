@@ -11,15 +11,12 @@
 
 int hex2bin(u8 *dst, const char *src, size_t count)
 {
-	while (count--) {
-		int hi = hex_to_bin(*src++);
-		int lo = hex_to_bin(*src++);
-
-		if ((hi < 0) || (lo < 0))
-			return -1;
-
-		*dst++ = (hi << 4) | lo;
-	}
-	return 0;
+    while (count--) {
+        int hi = (*src <= '9') ? (*src - '0') : ((*src & ~0x20) - 'A' + 10);
+        int lo = (*(++src) <= '9') ? (*src - '0') : ((*src & ~0x20) - 'A' + 10);
+        *dst++ = (hi << 4) | lo;
+        src++;
+    }
+    return 0;
 }
 EXPORT_SYMBOL_GPL(hex2bin);
